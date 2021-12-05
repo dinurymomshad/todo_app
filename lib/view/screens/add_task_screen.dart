@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/model/task_model.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/controller/task_controller.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  final VoidCallback reload;
-  const AddTaskScreen({Key? key, required this.reload}) : super(key: key);
+  const AddTaskScreen({Key? key}) : super(key: key);
 
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  TextEditingController taskController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final TaskController taskController = Get.find();
     return Scaffold(
       appBar: AppBar(title: const Text("Add New Task")),
       body: SingleChildScrollView(
@@ -22,7 +23,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           child: Column(
             children: [
               TextField(
-                controller: taskController,
+                controller: titleController,
                 decoration: const InputDecoration(
                   hintText: "Type something",
                 ),
@@ -30,9 +31,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  taskList.add(Todo(title: taskController.text));
-                  widget.reload();
-                  Navigator.pop(context);
+                  taskController.createTask(titleController.text);
+                  Get.back();
                 },
                 child: const Text("Add Task"),
               ),

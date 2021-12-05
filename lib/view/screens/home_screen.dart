@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/model/task_model.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/controller/task_controller.dart';
 import 'package:todo_app/view/global_widgets/task_card.dart';
-
 import 'add_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,12 +12,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  refreshPage() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
+    /// Instantiate controller
+    final taskController = Get.put(TaskController());
+
     return Scaffold(
         appBar: AppBar(
           title: const Text("Tasks"),
@@ -25,13 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddTaskScreen(
-                    reload: refreshPage,
-                  ),
-                ));
+            Get.to(() => const AddTaskScreen());
           },
         ),
         body: SingleChildScrollView(
@@ -44,23 +37,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Text(
                   "Pending Tasks",
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 25,
-                  ),
+                  style: TextStyle(fontSize: 25),
                 ),
                 const SizedBox(height: 10),
 
-                /// TODO: Shirnk wrap performace related issue
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: taskList.length,
-                    itemBuilder: (context, index) {
-                      return TaskCard(
-                        title: taskList[index].title,
-                        onDissmissed: refreshPage,
-                      );
-                    })
+                /// TODO: Shrink wrap performance related issue
+                Obx(() {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: taskController.getTasks.length,
+                      itemBuilder: (context, index) {
+                        return TaskCard(
+                          index: index,
+                          title: taskController.getTasks[index].title,
+                        );
+                      });
+                })
               ],
             ),
           ),

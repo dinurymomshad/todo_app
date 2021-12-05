@@ -1,43 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/model/task_model.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/controller/task_controller.dart';
 
 class TaskCard extends StatefulWidget {
+  final int index;
   final String title;
-  final VoidCallback onDissmissed;
 
-  const TaskCard({
-    Key? key,
-    required this.title,
-    required this.onDissmissed,
-  }) : super(key: key);
+  const TaskCard({Key? key, required this.index, required this.title}) : super(key: key);
 
   @override
   State<TaskCard> createState() => _TaskCardState();
 }
 
 class _TaskCardState extends State<TaskCard> {
-  bool isDone = false;
-
   @override
   Widget build(BuildContext context) {
+    final TaskController taskController = Get.find();
+
     return Dismissible(
       key: UniqueKey(),
-      onDismissed: (direction) async {
-        /// TODO: remove item using index
-        taskList.removeWhere((element) => element.title == widget.title);
-        widget.onDissmissed();
-      },
+      onDismissed: (direction) async => taskController.deleteTask(widget.index),
       child: ListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(widget.title),
           trailing: Icon(
-            isDone ? Icons.check_box : Icons.check_box_outline_blank,
+            taskController.getTasks[widget.index].isCompleted ? Icons.check_box : Icons.check_box_outline_blank,
           ),
           onTap: () {
-            /// TODO: update state in the list
-            setState(() {
-              isDone = !isDone;
-            });
+            taskController.updateTask(
+              widget.index,
+              !taskController.getTasks[widget.index].isCompleted,
+            );
           }),
     );
   }
