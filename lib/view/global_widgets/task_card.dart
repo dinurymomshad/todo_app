@@ -15,6 +15,7 @@ class TaskCard extends StatefulWidget {
 class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
+    /// find the controller
     final TaskController taskController = Get.find();
 
     return Dismissible(
