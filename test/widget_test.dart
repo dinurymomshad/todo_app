@@ -14,12 +14,11 @@ import 'package:todo_app/view/global_widgets/task_card.dart';
 import 'package:todo_app/view/screens/add_task_screen.dart';
 import 'package:todo_app/view/screens/home_screen.dart';
 
-
 void main() {
   group('Home Screen', () {
     TaskController taskController;
 
-    setUp(() {
+    setUpAll(() {
       /// Initialize controllers
       taskController = TaskController();
       Get.put(taskController);
@@ -28,6 +27,7 @@ void main() {
     testWidgets('When Home screen is initialized then find three tasks in-completed', (WidgetTester tester) async {
       /// Build and trigger a frame
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+
       /// Initially find three Element [of type TaskCard] in the Listview.builder
       expect(find.byWidgetPredicate((widget) => widget is TaskCard && !widget.isCompleted), findsNWidgets(3));
     });
@@ -35,9 +35,11 @@ void main() {
     testWidgets('When a task is tapped then find that task as completed', (WidgetTester tester) async {
       /// Build and trigger a frame
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+
       /// Tap on a element from the List of Tasks
       await tester.tap(find.text('Add a task'));
       await tester.pump();
+
       /// Find one completed element of type TaskCard
       expect(find.byWidgetPredicate((widget) => widget is TaskCard && widget.isCompleted), findsOneWidget);
     });
@@ -53,8 +55,10 @@ void main() {
       await tester.pump();
 
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+
       /// Ensure 4 elements in total after adding the new task
       expect(find.byType(TaskCard), findsNWidgets(4));
+
       /// Ensure Newly added task is present in the list
       expect(find.text('New Task'), findsOneWidget);
     });
@@ -73,9 +77,9 @@ void main() {
       expect(find.text('Add a task'), findsNothing);
 
       /// Ensure only two item remains
-      expect(find.byWidgetPredicate((widget) => widget is TaskCard && !widget.isCompleted), findsNWidgets(3));
+      expect(find.byWidgetPredicate((widget) => widget is TaskCard && !widget.isCompleted), findsNWidgets(3),
+          reason:
+              'Since we added a new task total number of widget is 4 and removing one we should get 3 widgets');
     });
-
-
   });
 }
