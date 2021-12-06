@@ -42,23 +42,6 @@ void main() {
       expect(find.byWidgetPredicate((widget) => widget is TaskCard && widget.isCompleted), findsOneWidget);
     });
 
-    testWidgets('When swiped to dismiss then an element will be removed from the task list', (WidgetTester tester) async {
-      /// Build and trigger a frame
-      await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
-
-      /// Swipe the item to dismiss it
-      await tester.drag(find.text('Add a task'), const Offset(500, 0));
-
-      /// Build the widget until the dismiss animation ends.
-      await tester.pumpAndSettle();
-
-      /// Ensure that item is no longer on the screen
-      expect(find.text('Add a task'), findsNothing);
-
-      /// Ensure only two item remains
-      expect(find.byWidgetPredicate((widget) => widget is TaskCard && !widget.isCompleted), findsNWidgets(2));
-    });
-
     testWidgets('When Task is created then list will be updated with newly added task', (WidgetTester tester) async {
       /// Build and trigger a frame
       await tester.pumpWidget(const GetMaterialApp(home: AddTaskScreen()));
@@ -75,5 +58,24 @@ void main() {
       /// Ensure Newly added task is present in the list
       expect(find.text('New Task'), findsOneWidget);
     });
+
+    testWidgets('When swiped to dismiss then an element will be removed from the task list', (WidgetTester tester) async {
+      /// Build and trigger a frame
+      await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+
+      /// Swipe the item to dismiss it
+      await tester.drag(find.text('Add a task'), const Offset(500, 0));
+
+      /// Build the widget until the dismiss animation ends.
+      await tester.pumpAndSettle();
+
+      /// Ensure that item is no longer on the screen
+      expect(find.text('Add a task'), findsNothing);
+
+      /// Ensure only two item remains
+      expect(find.byWidgetPredicate((widget) => widget is TaskCard && !widget.isCompleted), findsNWidgets(3));
+    });
+
+
   });
 }
