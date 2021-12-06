@@ -5,26 +5,75 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/controller/task_controller.dart';
+import 'package:todo_app/view/global_widgets/task_card.dart';
+import 'package:todo_app/view/screens/add_task_screen.dart';
+import 'package:todo_app/view/screens/home_screen.dart';
 
-import 'package:todo_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('Home Screen', () {
+    TaskController taskController;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    setUp(() {
+      /// Initialize controllers
+      taskController = TaskController();
+      Get.put(taskController);
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    testWidgets('When Home screen is initialized then find three tasks in-completed', (WidgetTester tester) async {
+      /// Build and trigger a frame
+      await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+      /// Initially find three Element [of type TaskCard] in the Listview.builder
+      expect(find.byWidgetPredicate((widget) => widget is TaskCard && !widget.isCompleted), findsNWidgets(3));
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    testWidgets('When a task is tapped then find that task as completed', (WidgetTester tester) async {
+      /// Build and trigger a frame
+      await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+      /// Tap on a element from the List of Tasks
+      await tester.tap(find.text('Add a task'));
+      await tester.pump();
+      /// Find one completed element of type TaskCard
+      expect(find.byWidgetPredicate((widget) => widget is TaskCard && widget.isCompleted), findsOneWidget);
+    });
+
+    testWidgets('When swiped to dismiss then an element will be removed from the task list', (WidgetTester tester) async {
+      /// Build and trigger a frame
+      await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+
+      /// Swipe the item to dismiss it
+      await tester.drag(find.text('Add a task'), const Offset(500, 0));
+
+      /// Build the widget until the dismiss animation ends.
+      await tester.pumpAndSettle();
+
+      /// Ensure that item is no longer on the screen
+      expect(find.text('Add a task'), findsNothing);
+
+      /// Ensure only two item remains
+      expect(find.byWidgetPredicate((widget) => widget is TaskCard && !widget.isCompleted), findsNWidgets(2));
+    });
+
+    testWidgets('When Task is created then list will be updated with newly added task', (WidgetTester tester) async {
+      /// Build and trigger a frame
+      await tester.pumpWidget(const GetMaterialApp(home: AddTaskScreen()));
+
+      /// Enter text into the TextField
+      await tester.enterText(find.byType(TextField), 'New Task');
+
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pump();
+
+      await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+      /// Ensure 4 elements in total after adding the new task
+      expect(find.byType(TaskCard), findsNWidgets(4));
+      /// Ensure Newly added task is present in the list
+      expect(find.text('New Task'), findsOneWidget);
+    });
   });
 }

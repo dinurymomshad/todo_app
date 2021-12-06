@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return TaskCard(
                           index: index,
                           title: taskController.getTasks[index].title,
+                          isCompleted: taskController.getTasks[index].isCompleted,
                         );
                       });
                 })
