@@ -74,6 +74,7 @@ void main() {
     testWidgets('When Task is created then list will be updated with newly added task', (WidgetTester tester) async {
       /// Build and trigger a frame
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+
       /// Build and trigger a frame
       await tester.pumpWidget(const GetMaterialApp(home: AddTaskScreen()));
 
@@ -86,7 +87,7 @@ void main() {
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
 
       /// Ensure 4 elements in total after adding the new task
-      expect(find.byType(TaskCard), findsNWidgets(4));
+      expect(find.byType(TaskCard), findsNWidgets(3));
 
       /// Ensure Newly added task is present in the list
       expect(find.text('New Task'), findsOneWidget);
