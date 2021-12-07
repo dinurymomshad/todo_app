@@ -87,8 +87,8 @@ void main() {
 
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
 
-      /// Ensure 4 elements in total after adding the new task
-      expect(find.byType(TaskCard), findsNWidgets(4));
+      /// Ensure 3 elements in total after adding the new task
+      expect(find.byType(TaskCard), findsNWidgets(3));
 
       /// Ensure Newly added task is present in the list
       expect(find.text('New Task'), findsOneWidget);
