@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/controller/task_controller.dart';
+import 'package:todo_app/data/repository/task_repository.dart';
+import 'package:todo_app/view_model/task_view_model.dart';
 import 'package:todo_app/view/global_widgets/task_card.dart';
 import 'add_task_screen.dart';
 
@@ -15,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     /// Instantiate controller
-    final taskController = Get.put(TaskController());
+    final taskController = Get.put(TaskViewModel(repository: TaskRepository()));
 
     return Scaffold(
         appBar: AppBar(

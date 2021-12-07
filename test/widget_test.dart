@@ -9,18 +9,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/controller/task_controller.dart';
+import 'package:todo_app/data/repository/task_repository.dart';
+import 'package:todo_app/view_model/task_view_model.dart';
 import 'package:todo_app/view/global_widgets/task_card.dart';
 import 'package:todo_app/view/screens/add_task_screen.dart';
 import 'package:todo_app/view/screens/home_screen.dart';
 
 void main() {
   group('Home Screen', () {
-    TaskController taskController;
+    TaskViewModel taskController;
 
     setUp(() {
       /// Initialize controllers
-      taskController = TaskController();
+      taskController = TaskViewModel(repository: TaskRepository());
       Get.put(taskController);
     });
 
@@ -63,17 +64,18 @@ void main() {
   });
 
   group('Add Task Screen', () {
-    TaskController taskController;
+    TaskViewModel taskController;
 
     setUp(() {
       /// Initialize controllers
-      taskController = TaskController();
+      taskController = TaskViewModel(repository: TaskRepository());
       Get.put(taskController);
     });
 
     testWidgets('When Task is created then list will be updated with newly added task', (WidgetTester tester) async {
       /// Build and trigger a frame
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
+
       /// Build and trigger a frame
       await tester.pumpWidget(const GetMaterialApp(home: AddTaskScreen()));
 

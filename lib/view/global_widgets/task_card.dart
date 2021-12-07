@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/controller/task_controller.dart';
+import 'package:todo_app/view_model/task_view_model.dart';
 
 class TaskCard extends StatefulWidget {
   final int index;
@@ -16,7 +16,7 @@ class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     /// find the controller
-    final TaskController taskController = Get.find();
+    final TaskViewModel taskController = Get.find();
 
     return Dismissible(
       key: UniqueKey(),

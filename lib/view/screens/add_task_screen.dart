@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/controller/task_controller.dart';
+import 'package:todo_app/view_model/task_view_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final TaskController taskController = Get.find();
+    final TaskViewModel taskController = Get.find();
     return Scaffold(
       appBar: AppBar(title: const Text("Add New Task")),
       body: SingleChildScrollView(
