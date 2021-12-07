@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:todo_app/model/task_model.dart';
+import 'package:todo_app/data/model/task_model.dart';
 
 class TaskController extends GetxController {
   /// Task List
@@ -10,7 +10,7 @@ class TaskController extends GetxController {
   ].obs;
 
   /// Get Tasks
-  List<Todo> get  getTasks => _taskList;
+  List<Todo> get getTasks => _taskList;
 
   /// Create Task
   createTask(String title) {
