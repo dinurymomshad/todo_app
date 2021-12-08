@@ -18,13 +18,13 @@ void main() {
   group('Home Screen', () {
     TaskController taskController;
 
-    setUp(() {
+    setUpAll(() {
       /// Initialize controllers
       taskController = TaskController();
       Get.put(taskController);
     });
 
-    tearDown(() {
+    tearDownAll(() {
       Get.delete<TaskController>();
     });
 
