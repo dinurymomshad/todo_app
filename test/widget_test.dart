@@ -19,13 +19,13 @@ void main() {
   group('Home Screen', () {
     TaskViewModel taskController;
 
-    setUp(() {
+    setUpAll(() {
       /// Initialize controllers
       taskController = TaskViewModel(repository: TaskRepository());
       Get.put(taskController);
     });
 
-    tearDown(() {
+    tearDownAll(() {
       Get.delete<TaskViewModel>();
     });
 
