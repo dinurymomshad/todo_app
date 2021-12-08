@@ -25,6 +25,10 @@ void main() {
       Get.put(taskController);
     });
 
+    tearDown(() {
+      Get.delete<TaskViewModel>();
+    });
+
     testWidgets('When Home screen is initialized then find three tasks in-completed', (WidgetTester tester) async {
       /// Build and trigger a frame
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
@@ -87,8 +91,8 @@ void main() {
 
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
 
-      /// Ensure 3 elements in total after adding the new task
-      expect(find.byType(TaskCard), findsNWidgets(3));
+      /// Ensure 4 elements in total after adding the new task
+      expect(find.byType(TaskCard), findsNWidgets(4));
 
       /// Ensure Newly added task is present in the list
       expect(find.text('New Task'), findsOneWidget);
