@@ -81,7 +81,7 @@ void main() {
       await tester.pumpWidget(const GetMaterialApp(home: HomeScreen()));
 
       /// Build and trigger a frame
-      await tester.pumpWidget(const GetMaterialApp(home: AddTaskScreen()));
+      await tester.pumpWidget(GetMaterialApp(home: AddTaskScreen()));
 
       /// Enter text into the TextField
       await tester.enterText(find.byType(TextField), 'New Task');

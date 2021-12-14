@@ -5,14 +5,9 @@ import 'package:todo_app/view_model/task_view_model.dart';
 import 'package:todo_app/view/global_widgets/task_card.dart';
 import 'add_task_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     /// Instantiate controller
@@ -25,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () async {
-            Get.to(() => const AddTaskScreen());
+            Get.to(() =>  AddTaskScreen());
           },
         ),
         body: SingleChildScrollView(
